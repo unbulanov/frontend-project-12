@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Card, Row } from 'react-bootstrap';
-import LoginForm from './LoginForm.jsx';
+import LoginForm from './Forms/LoginForm.jsx';
 
 const LoginPage = () => (
   <Container fluid className="h-100">

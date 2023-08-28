@@ -9,11 +9,14 @@ import {
 } from 'react-router-dom';
 import { Button, Navbar, Nav } from 'react-bootstrap';
 
-import PublicPage from './PublicPage.jsx';
-import LoginPage from './LoginPage.jsx';
-import PrivatePage from './PrivatePage.jsx';
+// import PublicPage from './PublicPage.jsx';
 import AuthContext from '../Contexts/index.jsx';
 import useAuth from '../Hooks/index.jsx';
+import SignUpPage from './SignUpPage.jsx';
+import LoginPage from './LoginPage.jsx';
+import PrivatePage from './PrivatePage.jsx';
+import ErrorPage from './ErrorPage.jsx';
+import routes from '../routes.js';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -54,6 +57,7 @@ const AuthButton = () => {
 const App = () => (
   <AuthProvider>
     <Router>
+    <div className="d-flex flex-column h-100">
       <Navbar bg="light" expand="lg">
         <Navbar.Brand as={Link} to="/">Secret Place</Navbar.Brand>
         <Nav className="mr-auto">
@@ -62,13 +66,11 @@ const App = () => (
         </Nav>
         <AuthButton />
       </Navbar>
-
-      <div className="container p-3">
-        <h1 className="text-center mt-5 mb-4">Welcome to the secret place!</h1>
         <Routes>
           <Route path="/" element={null} />
-          <Route path="/public" element={<PublicPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path={routes.loginPage()} element={<LoginPage />} />
+          <Route path={routes.signUpPage()} element={<SignUpPage />} />
+          <Route path={routes.errorPage()} element={<ErrorPage />} />
           <Route
             path="/private"
             element={(
