@@ -1,20 +1,21 @@
-/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import * as yup from 'yup';
+import { useFormik } from 'formik';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useNavigate, useLocation } from 'react-router-dom';
-import routes from '../../routes.js';
-import useAuth from '../../Hooks/index.jsx';
-import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
+import useAuth from '../../hooks/useAuth';
+import routes from '../../routes';
 
 const LoginForm = () => {
+  const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
   const LoginSchema = yup.object().shape({
-    username: yup.string().required('Это обязательное поле'),
-    password: yup.string().required('Это обязательное поле'),
+    username: yup.string().required(t('login.required')),
+    password: yup.string().required(t('login.required')),
   });
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,6 +29,7 @@ const LoginForm = () => {
       username: '',
       password: '',
     },
+    // eslint-disable-next-line consistent-return
     onSubmit: async (values) => {
       try {
         const response = await axios.post(routes.loginPath(), values);
@@ -50,7 +52,7 @@ const LoginForm = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h2 className="text-center mb-4">Войти</h2>
+      <h2 className="text-center mb-4">{t('login.enter')}</h2>
       <Form.Group className="form-floating mb-3">
         <Form.Control
           id="username"
@@ -61,7 +63,7 @@ const LoginForm = () => {
           type="text"
           isInvalid={(touched.username && !!errors.username) || authFailed}
         />
-        <Form.Label htmlFor="username">Имя</Form.Label>
+        <Form.Label htmlFor="username">{t('login.name')}</Form.Label>
         {!!errors.username && (
           <Form.Control.Feedback type="invalid" tooltip>
             {errors.username && touched.username ? errors.username : null}
@@ -77,13 +79,13 @@ const LoginForm = () => {
           type="password"
           isInvalid={(touched.password && !!errors.password) || authFailed}
         />
-        <Form.Label htmlFor="password">Пароль</Form.Label>
+        <Form.Label htmlFor="password">{t('login.password')}</Form.Label>
         <Form.Control.Feedback type="invalid" tooltip>
-          {errors.password ?? 'Пользователь не найден'}
+          {errors.password ?? t('login.notFoundAcc')}
         </Form.Control.Feedback>
       </Form.Group>
       <Button className="w-100 mb-3" variant="primary" type="submit">
-        Войти
+        {t('login.enter')}
       </Button>
     </Form>
   );
